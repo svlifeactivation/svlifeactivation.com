@@ -12,7 +12,7 @@ export async function pushHook(event, json) {
   }
   const branch = json.ref.startsWith('refs/heads/') ? json.ref.slice('refs/heads/'.length) : json.ref
   const body = JSON.stringify({
-    ref: 'master',
+    ref: 'www',
     inputs: {
       'branch': branch,
     },
