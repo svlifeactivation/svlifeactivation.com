@@ -92,6 +92,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         deployment_id: ${{ steps.deployment.outputs.id }}
         state: success
+        environment_url: https://${{ github.event.inputs.branch }}.svlifeactivation.com
 
     - name: Update deployment status (failure)
       if: failure()
