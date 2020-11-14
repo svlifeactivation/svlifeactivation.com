@@ -1,0 +1,20 @@
+name = "svlifeactivation"
+type = "webpack"
+account_id = "514ad28b3dca01ef75a302fcec5aa337"
+workers_dev = true
+route = ""
+zone_id = "37392500eeaa6a78df1840474c86fc62"
+webpack_config = "webpack.development.js"
+
+[site]
+bucket = "./public"
+
+[env.template]
+route = "{}.svlifeactivation.com/*"
+webpack_config = "webpack.production.js"
+
+[env.www.vars]
+
+[env.template.vars]
+HOOK_SECRET = "secret"
+DEPLOY_TOKEN = "token"
