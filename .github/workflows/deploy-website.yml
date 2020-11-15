@@ -25,14 +25,14 @@ jobs:
       uses: maxkomarychev/oction-create-deployment@v0.7.1
       id: deployment
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.DEPLOY_TOKEN }}
         ref: ${{ github.event.inputs.branch }}
         environment: ${{ github.event.inputs.branch }}
 
     - name: Update deployment status (in_progress)
       uses: maxkomarychev/oction-create-deployment-status@v0.7.1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.DEPLOY_TOKEN }}
         deployment_id: ${{ steps.deployment.outputs.id }}
         state: in_progress
 
@@ -101,7 +101,7 @@ jobs:
     - name: Update deployment status (success)
       uses: maxkomarychev/oction-create-deployment-status@v0.7.1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.DEPLOY_TOKEN }}
         deployment_id: ${{ steps.deployment.outputs.id }}
         state: success
         environment_url: https://${{ github.event.inputs.branch }}.svlifeactivation.com
@@ -110,6 +110,6 @@ jobs:
       if: failure()
       uses: maxkomarychev/oction-create-deployment-status@v0.7.1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.DEPLOY_TOKEN }}
         deployment_id: ${{ steps.deployment.outputs.id }}
         state: failure
