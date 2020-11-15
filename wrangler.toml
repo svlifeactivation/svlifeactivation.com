@@ -7,7 +7,7 @@ zone_id = "37392500eeaa6a78df1840474c86fc62"
 webpack_config = "webpack.development.js"
 
 [site]
-bucket = "./public"
+bucket = "./_site"
 
 [env.template]
 route = "{}.svlifeactivation.com/*"
