@@ -59,12 +59,10 @@ jobs:
           ${{ runner.os }}-pip-
 
     - uses: actions/setup-python@v2
-      with:
-        python-version: '>=3.8'
 
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '2.7'  # >=2.7 once https://github.com/ruby/setup-ruby/issues/110 is resolved.
+        ruby-version: ruby
         working-directory: public
         bundler-cache: true
 
