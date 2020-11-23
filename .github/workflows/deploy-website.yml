@@ -3,14 +3,8 @@
 
 name: Deploy website
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: Branch
-        required: true
+# Controls when the action will run. Triggers the workflow on deployment events
+on: deployment
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,26 +15,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Create deployment
-      uses: maxkomarychev/oction-create-deployment@v0.7.1
-      id: deployment
-      with:
-        token: ${{ secrets.DEPLOY_TOKEN }}
-        ref: ${{ github.event.inputs.branch }}
-        environment: ${{ github.event.inputs.branch }}
-
     - name: Update deployment status (in_progress)
       uses: maxkomarychev/oction-create-deployment-status@v0.7.1
       with:
         token: ${{ secrets.DEPLOY_TOKEN }}
-        deployment_id: ${{ steps.deployment.outputs.id }}
+        deployment_id: ${{ github.event.deployment.id }}
         state: in_progress
 
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: actions/checkout@v2
       uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.inputs.branch }}
+        ref: ${{ github.event.deployment.sha }}
 
     - name: actions/cache@v2 for npm
       uses: actions/cache@v2
@@ -80,34 +66,34 @@ jobs:
     - name: Build website
       working-directory: public
       run: |
-        echo "url: \"https://${{ github.event.inputs.branch }}.svlifeactivation.com\"" >> _config.yml
-        JEKYLL_ENV=${{ github.event.inputs.branch }} bundler exec jekyll build -d ../_site
+        echo "url: \"https://${{ github.event.deployment.environment }}.svlifeactivation.com\"" >> _config.yml
+        JEKYLL_ENV=${{ github.event.deployment.environment }} bundler exec jekyll build -d ../_site
 
     - name: Build workers site
       run: |
         python $GITHUB_WORKSPACE/scripts/build_site.py built
         cd built
-        python $GITHUB_WORKSPACE/scripts/add_environment.py ${{ github.event.inputs.branch }}
+        python $GITHUB_WORKSPACE/scripts/add_environment.py ${{ github.event.deployment.environment }}
 
     - name: Publish website
       uses: cloudflare/wrangler-action@1.2.0
       with:
         apiToken: ${{ secrets.CF_API_TOKEN }}
         workingDirectory: built
-        environment: ${{ github.event.inputs.branch }}
+        environment: ${{ github.event.deployment.environment }}
 
     - name: Update deployment status (success)
       uses: maxkomarychev/oction-create-deployment-status@v0.7.1
       with:
         token: ${{ secrets.DEPLOY_TOKEN }}
-        deployment_id: ${{ steps.deployment.outputs.id }}
+        deployment_id: ${{ github.event.deployment.id }}
         state: success
-        environment_url: https://${{ github.event.inputs.branch }}.svlifeactivation.com
+        environment_url: https://${{ github.event.deployment.environment }}.svlifeactivation.com
 
     - name: Update deployment status (failure)
       if: failure()
       uses: maxkomarychev/oction-create-deployment-status@v0.7.1
       with:
         token: ${{ secrets.DEPLOY_TOKEN }}
-        deployment_id: ${{ steps.deployment.outputs.id }}
+        deployment_id: ${{ github.event.deployment.id }}
         state: failure
