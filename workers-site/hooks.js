@@ -3,19 +3,17 @@
 export async function pushHook(event, json) {
   const owner = 'svlifeactivation'
   const repo = 'svlifeactivation.com'
-  const workflow_id = 'create-deployment.yml'
 
-  const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`
+  const url = `https://api.github.com/repos/${owner}/${repo}/deployments`
   const headers = {
     'User-Agent': 'normanr-svlifeactivation-create-deployment-hook',
     'Authorization': 'token ' + DEPLOY_TOKEN,
+		'Accept': 'application/vnd.github.v3+json',
   }
   const branch = json.ref.startsWith('refs/heads/') ? json.ref.slice('refs/heads/'.length) : json.ref
   const body = JSON.stringify({
-    ref: 'www',
-    inputs: {
-      'branch': branch,
-    },
+    ref: json.ref,
+    environment: branch,
   })
   console.log(body)
   return fetch(url, {
