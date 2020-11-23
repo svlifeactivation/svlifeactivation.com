@@ -1,3 +1,4 @@
+# vim: ft=dosini
 name = "svlifeactivation"
 type = "webpack"
 account_id = "514ad28b3dca01ef75a302fcec5aa337"
@@ -8,6 +9,10 @@ webpack_config = "webpack.development.js"
 
 [site]
 bucket = "./_site"
+
+[vars]
+HOOK_SECRET = "secret"
+DEPLOY_TOKEN = "token"
 
 [env.template]
 route = "{}.svlifeactivation.com/*"
