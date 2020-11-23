@@ -54,7 +54,7 @@ async function processWebHook(event, secret, handler) {
     const utf8Decoder = new TextDecoder('utf-8', {fatal: true})
     const json = JSON.parse(utf8Decoder.decode(payload))
 
-    return handler(event, json)
+    return await handler(event, json)
   } catch (e) {
     return new Response(e.message || e.toString(), { status: 500 })
   }

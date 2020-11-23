@@ -1,6 +1,6 @@
 // vim: si:ts=2:sts=2:sw=2
 
-export async function pushHook(event, json) {
+export function pushHook(event, json) {
   const owner = 'svlifeactivation'
   const repo = 'svlifeactivation.com'
 
