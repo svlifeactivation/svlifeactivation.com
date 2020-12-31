@@ -5,7 +5,7 @@ account_id = "514ad28b3dca01ef75a302fcec5aa337"
 workers_dev = true
 route = ""
 zone_id = "37392500eeaa6a78df1840474c86fc62"
-webpack_config = "webpack.development.js"
+webpack_config = "workers-site/webpack.development.js"
 
 [site]
 bucket = "./_site"
@@ -16,7 +16,7 @@ DEPLOY_TOKEN = "token"
 
 [env.template]
 route = "{}.svlifeactivation.com/*"
-webpack_config = "webpack.production.js"
+webpack_config = "workers-site/webpack.production.js"
 
 [env.www.vars]
 
