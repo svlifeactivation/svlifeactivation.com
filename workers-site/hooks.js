@@ -8,11 +8,12 @@ export function pushHook(event, json) {
   const headers = {
     'User-Agent': 'normanr-svlifeactivation-create-deployment-hook',
     'Authorization': 'token ' + DEPLOY_TOKEN,
-		'Accept': 'application/vnd.github.v3+json',
+    'Accept': 'application/vnd.github.v3+json',
   }
   const branch = json.ref.startsWith('refs/heads/') ? json.ref.slice('refs/heads/'.length) : json.ref
   const body = JSON.stringify({
     ref: json.ref,
+    auto_merge: false,
     environment: branch,
   })
   console.log(body)
