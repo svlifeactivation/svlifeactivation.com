@@ -71,15 +71,12 @@ jobs:
 
     - name: Build workers site
       run: |
-        python $GITHUB_WORKSPACE/scripts/build_site.py built
-        cd built
         python $GITHUB_WORKSPACE/scripts/add_environment.py ${{ github.event.deployment.environment }}
 
     - name: Publish website
       uses: cloudflare/wrangler-action@1.2.0
       with:
         apiToken: ${{ secrets.CF_API_TOKEN }}
-        workingDirectory: built
         environment: ${{ github.event.deployment.environment }}
 
     - name: Update deployment status (success)
